@@ -6,31 +6,37 @@ import random
 #-----game configuration----
 color = "white"
 shape = "triangle"
-speed = int(0)
-size = int(1)
+speed = 0
+size = 3
 score = 0
+font = ("Arial", 70, "normal")
+timer = 5
+counter_interval = 1000   #1000 represents 1 second
+wn = turtle.Screen()
 #-----initialize turtle-----
 dead = turtle.Turtle(shape = shape)
 dead.turtlesize(size)
 dead.speed(speed)
+dead.left(90)
 dead.pencolor("red")
 
 scoreman = turtle.Turtle()
 scoreman.ht()
 scoreman.pu()
 scoreman.goto(-370, 270)
-scoreman.write(score)
-scoreman.pencolor("white")
+scoreman.pencolor("black")
 
+counter =  turtle.Turtle()
+counter.ht()
+counter.pu()
+counter.goto(200, 270)
 
 #-----game functions--------
 def dead_clicked(x,y):
-    global score
-    score += 1
-    score_change(score)
-    #print(score)
+    score_change()
     dead.dot(25)
     change_loc()
+
 def change_loc():
     dead.ht()
     dead.pu()
@@ -39,12 +45,36 @@ def change_loc():
     dead.goto(randx, randy)
     dead.pd()
     dead.st()
-def score_change(score):
-    scoreman.dot(15)
+
+def score_change():
+    global score
+    score += 1
+    scoreman.clear()
+    scoreman.write(score, align="center", font=font)
     print(score)
-    scoreman.write(score)
+
+def countdown():
+  global timer
+  counter.clear()
+  if timer <= 0:
+    counter.goto(0,0)
+    counter.write("Time's Up", align="center", font=font)
+    game_over()
+  else:
+    counter.write("Timer: " + str(timer), align="center", font=font)
+    timer -= 1
+    counter.getscreen().ontimer(countdown, counter_interval)
+
+def game_over():
+    dead.ht()
+    dead.pu()
+    dead.clear()
+    dead.goto(0, 9000)
+    wn.bgcolor("green")
 #-----events----------------
 
 dead.onclick(dead_clicked)
-wn = turtle.Screen()
+
+
+wn.ontimer(countdown, counter_interval) 
 wn.mainloop()
