@@ -2,23 +2,27 @@
 #-----import statements-----
 import turtle as turtle
 import random
+import time
 
 #-----game configuration----
 color = "white"
-shape = "triangle"
+shape = "turtle"
 speed = 0
-size = 3
+size = 2
 score = 0
 font = ("Arial", 70, "normal")
 timer = 5
 counter_interval = 1000   #1000 represents 1 second
+color_list = ["red", "green", "blue", "brown", "black"]
 wn = turtle.Screen()
+
 #-----initialize turtle-----
 dead = turtle.Turtle(shape = shape)
 dead.turtlesize(size)
 dead.speed(speed)
 dead.left(90)
-dead.pencolor("red")
+dead.color(random.choice(color_list))
+#dead.pencolor("red")
 
 scoreman = turtle.Turtle()
 scoreman.ht()
@@ -70,11 +74,17 @@ def game_over():
     dead.pu()
     dead.clear()
     dead.goto(0, 9000)
-    wn.bgcolor("green")
+    while True:
+      wn.bgcolor("red")
+      time.sleep(1/60)
+      wn.bgcolor("green")
+      time.sleep(1/60)
+      wn.bgcolor("blue")
+      time.sleep(1/60)
+
 #-----events----------------
 
 dead.onclick(dead_clicked)
-
 
 wn.ontimer(countdown, counter_interval) 
 wn.mainloop()
